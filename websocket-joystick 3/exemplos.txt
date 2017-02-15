@@ -1,0 +1,14 @@
+//Exemplo slider JS
+var comandos = "import machine " + '\n'+'\r'+
+"p2 = machine.Pin(2)" + '\n'+'\r'+
+"p2 = machine.PWM(p2)" + '\n'+'\r'+
+"p2.freq(500)" + '\n'+'\r'+
+"p2.duty(" + (1023-desloc[1]*2) +")";
+doSend(comandos);
+
+//Exemplo Slider python 
+import machine
+p2 = machine.Pin(2)
+p2 = machine.PWM(p2)
+p2.freq(500)
+p2.duty(valor)

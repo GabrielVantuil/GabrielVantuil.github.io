@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8" />
+
+<title>WebSocket</title>
+<body>
+<div id="joystick"></div>
+<script src="joystick.js">  </script>
+
+<script language="javascript" type="text/javascript">
+var isconnected=0;
+  function mudaEstado(){
+    if(isconnected){
+      doDisconnect();
+    }
+    else{
+      doConnect();
+    }
+  }
+  function init(){
+    document.getElementById("ip").defaultValue = "ws://192.168.0.17:8266/";
+  	document.getElementById("entrada").value = "esp8266";
+  }
+
+  function doConnect(){
+    websocket = new WebSocket(document.getElementById("ip").value);
+    websocket.onopen    = function(evt) { onOpen(evt) };
+    websocket.onclose   = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror   = function(evt) { onError(evt) };
+  }
+
+  function onOpen(evt)  {
+    writeToScreen("connected\n");
+    document.getElementById("connectButton").value="Desconectar"; //////////////////////////////////////////////
+    isconnected=1;
+  }
+
+  function onClose(evt)  {
+    writeToScreen("disconnected\n");
+    document.getElementById("connectButton").value="Conectar"; //////////////////////////////////////////////
+    isconnected=0;
+  }
+
+  function onMessage(evt)  {
+    writeToScreen(evt.data );//">>>  " +    + '\n'
+  }
+
+  function onError(evt)  {
+    writeToScreen('error: ' + evt.data + '\n');
+  	websocket.close();
+    document.getElementById("connectButton").value="Conectar"; //////////////////////////////////////////////
+    isconnected=0;
+  }
+
+  function doSend(message)  {
+    websocket.send(message+'\n');
+    websocket.send('\r');
+  }
+
+  function writeToScreen(message)  {
+    document.getElementById("saida").value += message;
+    document.getElementById("saida").scrollTop = document.getElementById("saida").scrollHeight;
+
+  }
+  window.addEventListener("load", init, false);
+  function sendText() {
+    doSend( document.getElementById("entrada").value );
+  }
+  function clearText() {
+    document.getElementById("saida").value = "";     
+   }
+   function doDisconnect() {
+		websocket.close();
+   }
+</script>
+<link rel="stylesheet" type="text/css" href="websocket.css">
+<div id="output">
+  <div id= "form" >
+    <p id="conectar">
+      <input type="text" id="ip" name="url"></input>
+      <input type="button" id ="connectButton" name=connectButton value="Connect" onClick="mudaEstado();">
+    </p>
+      <br>
+      <textarea id="saida" name ="outputtext" disabled></textarea>
+      <textarea id="entrada" name="inputtext"></textarea>
+    <p>
+      <input type="button" name=sendButton value="Send" onClick="sendText();">
+      <input type="button" name=clearButton value="Clear" onClick="clearText();">
+    </p>
+  </div>
+  <p>
+    <div>
+      Titulo:    
+      <input id="nome" type="text" value="click"> <br>
+    </div>
+    <button onclick="cria('botao')" name="tipo" id="botao" > Botão </button>
+    <button onclick="cria('slider')" name="tipo" id="slider"> Slider </button>
+  </p>
+    <p id="elementos"></p>
+</div>
+<div>
+  <p id="elem_config" style="position: absolute; left: 50%; top:5%"></p>
+</div>
+<script src="botoes_configuraveis.js" type="text/javascript"></script>
+</body>
+</html> 
+
