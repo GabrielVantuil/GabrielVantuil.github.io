@@ -175,3 +175,10 @@ function enviarPy(texto){
   texto=texto.replace(/\n/g,"\r");
   doSend(texto);
 }
+
+
+gyro.startTracking(function(o) {
+    writeToScreen("X: "+o.x+" Y: "+o.y);
+    // o.x, o.y, o.z for accelerometer
+    // o.alpha, o.beta, o.gamma for gyro
+});
