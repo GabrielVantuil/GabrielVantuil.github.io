@@ -176,6 +176,8 @@ function enviarPy(texto){
   doSend(texto);
 }
 
+
+
 var x = 0, y = 0,
     vx = 0, vy = 0,
   ax = 0, ay = 0;
@@ -184,17 +186,17 @@ var sphere = document.getElementById("sphere");
 var X = document.createElement("span");
 var Y = document.createElement("span");
 var Z = document.createElement("span");
-elem_config.appendChild(X);
-elem_config.appendChild(Y);
-elem_config.appendChild(Z);
+document.getElementById("conectar").appendChild(X);
+document.getElementById("conectar").appendChild(Y);
+document.getElementById("conectar").appendChild(Z);
 
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
     ax = event.accelerationIncludingGravity.x * 5;
     ay = event.accelerationIncludingGravity.y * 5;
-    X.appendChild(createTextNode(e.accelerationIncludingGravity.x))
-    Y.innerHTML = e.accelerationIncludingGravity.y;
-    Z.innerHTML = e.accelerationIncludingGravity.z;
+    X.appendChild(document.createTextNode(e.accelerationIncludingGravity.x));
+    Y.appendChild(document.createTextNode(e.accelerationIncludingGravity.y));
+    Z.appendChild(document.createTextNode(e.accelerationIncludingGravity.z));
 /*
     if ( e.rotationRate ) {
       document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
