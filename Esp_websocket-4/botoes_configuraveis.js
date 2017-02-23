@@ -189,9 +189,9 @@ var coords = document.createElement("span");
 /*var Y = document.createElement("span");
 var Z = document.createElement("span");
 */
-document.getElementById("conectar").appendChild(X);
+document.getElementById("conectar").appendChild(coords);/*
 document.getElementById("conectar").appendChild(Y);
-document.getElementById("conectar").appendChild(Z);
+document.getElementById("conectar").appendChild(Z);*/
 
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
