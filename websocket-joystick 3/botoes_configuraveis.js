@@ -1,39 +1,37 @@
 var valor;
-var contElem=0;
 var elem_config =document.getElementById("elem_config");
 var exibir_t = document.createElement("span");
 var exibir_checkbox = document.createElement("input");
 var elem_config_list =document.createElement("div");
+var div = new Array();
 
 elem_config.appendChild(exibir_checkbox);
 elem_config.appendChild(exibir_t);
-//elem_config.appendChild(elem_config_list);
 exibir_t.appendChild(document.createTextNode("Configurar elementos "));
 exibir_checkbox.setAttribute("type","checkbox");
 
-function cria(elemTipo){
-  var div = document.createElement("div"); 
-  var elementos = document.getElementById("elementos");
-  var config_div = document.createElement("div");
+function cria(elemTipo,modo_tab,num_tab){
+  var id_div = div.length;
+  div[id_div] = document.createElement("div");              
+
+  var elementos = document.getElementById("elementos");     //Elemento comum
+  
+  var config_div = document.createElement("div");           
   var elemConfig_div = document.createElement("div");
   var funcao = document.createElement("textarea");
   var fechar = document.createElement("button");
-  var id = document.createElement("span");
   var showConfig_checkbox = document.createElement("input"); 
-
-  elementos.appendChild(div);
+  elementos.appendChild(div[id_div]);
   elem_config_list.appendChild(config_div);
   config_div.appendChild(fechar);
   config_div.appendChild(showConfig_checkbox);
   config_div.appendChild(elemConfig_div);
   elemConfig_div.appendChild(funcao);
 
-  div.appendChild(id); 
+  div[id_div].appendChild(document.createTextNode(" \  ("+id_div+")  ")); 
+  fechar.appendChild(document.createTextNode(" \  ("+id_div+")  "));
 
-  id.appendChild(document.createTextNode(" \  ("+contElem+")  ")); 
-  fechar.appendChild(document.createTextNode(" \  ("+contElem+")  "));
-
-  div.style.border="1px solid";
+  div[id_div].style.border="1px solid";
   config_div.style.border="1px solid";
   showConfig_checkbox.setAttribute("type","checkbox");
   showConfig_checkbox.style.slideThree;
@@ -44,10 +42,10 @@ function cria(elemTipo){
   if(elemTipo=="botao"){
     var botao2 = document.createElement("button");
     var titulo=  document.getElementById("nome").value;
-    div.appendChild(botao2); 
+    div[id_div].appendChild(botao2); 
     botao2.appendChild(document.createTextNode(titulo)); 
     botao2.onclick = function(){
-      enviar(funcao.value);
+      enviarPy(funcao.value);
     }
   }
 /////////////////////SLIDER/////////////////////////////////
@@ -59,10 +57,11 @@ function cria(elemTipo){
     var max = document.createElement("input");
     var txEnvio_txt = document.createTextNode("   Atualizar ao soltar: ");
     var txEnvio_CBox = document.createElement("input");
+    var contTempo=0;
 
-    div.appendChild(slider);
-    div.appendChild(valorAtual);
-    div.appendChild(val);
+    div[id_div].appendChild(slider);
+    div[id_div].appendChild(valorAtual);
+    div[id_div].appendChild(val);
     elemConfig_div.appendChild(min);
     elemConfig_div.appendChild(max);
     elemConfig_div.appendChild(txEnvio_txt);
@@ -85,24 +84,60 @@ function cria(elemTipo){
       val.innerHTML= slider.value;
       if(!txEnvio_CBox.checked){
         valor=slider.value;
-        enviarPy(funcao.value);
-        /*
         doSend("valor="+valor);
-        doSend(funcao.value);
-        ///*///
+        enviarPy(funcao.value);
       }
     }
     slider.onchange = function(){
       if(txEnvio_CBox.checked){
         valor=slider.value;
-        enviar(funcao.value);
+        doSend("valor="+valor);
+        enviarPy(funcao.value);
       }
     }
   }
+  if(elemTipo=="tabela"){
+    var tabela = document.createElement("table");
+    var tabela_div = document.createElement("div");
+    var tabela_H = document.createElement("input");
+    var tabela_V = document.createElement("input");
+    var tabela_criar = document.createElement("button");
+    var tab_H = new Array();
+    var tab_V = new Array();
+    var select_tab = document.getElementById("select_tab");
+    var tab_sel_CB = document.createElement("input");
+
+    div[id_div].appendChild(tabela_div);
+    div[id_div].appendChild(tabela);
+    tabela_div.appendChild(tabela_H); 
+    tabela_div.appendChild(tabela_V); 
+    tabela_div.appendChild(tabela_criar);
+    select_tab.appendChild(document.createTextNode(id_div+" :"));
+    select_tab.appendChild(tab_sel_CB);
+
+    tabela_criar.appendChild(document.createTextNode("criar"));
+    tab_sel_CB.setAttribute("type","checkbox");
+    tab_sel_CB.setAttribute("checked","1");
+    tabela_criar.onclick = function(){
+      for(var i=0;i<tabela_V.value;i++){
+          tab_V[i] = document.createElement("tr");
+          tabela.appendChild(tab_V[i]);
+      }
+      for(var i=0;i<tabela_V.value;i++){
+        for(var j=0;j<tabela_H.value;j++){
+            tab_H[i*10+j] = document.createElement("td");
+            tab_V[i].appendChild(tab_H[i*10+j]);
+            tab_H[i*10+j].appendChild(document.createTextNode("("+i+","+j+")"));
+        }
+      }
+      //div[id_div].parentNode.removeChild(tabela_div);
+    }
+  }
+
 /////////////////////FUNCOES////////////////////////////////
 
   fechar.onclick = function(){
-    div.parentNode.removeChild(div);
+    div[id_div-1].parentNode.removeChild(div[id_div-1]);
     config_div.parentNode.removeChild(config_div);
   }
   exibir_checkbox.onchange= function(){
@@ -122,8 +157,9 @@ function cria(elemTipo){
     }
   }
   funcao.id="funcao";
-  contElem++;
-}//
+  id_div++;
+}
+//
 function enviarJS(texto){
   var script = document.createElement("SCRIPT");
   var texto2 =document.createTextNode(texto);
@@ -131,19 +167,6 @@ function enviarJS(texto){
   document.getElementById("elementos").appendChild(script);
 }
 function enviarPy(texto){
-  //doSend(texto.replace('\n',"\n\r"));
-  for(var i = 0;i<texto.length;i++){
-    if(texto[i]=='\n'){
-
-      doSend("contem \\n");
-    }
-        if(texto[i]=='\r'){
-
-      doSend("contem \\r");
-    }
-  }
+  texto=texto.replace(/\n/g,"\r");
+  doSend(texto);
 }
-/*
-var texto1 = document.getElementById("texto");
-texto1.innerHTML= valor;      
-*/
