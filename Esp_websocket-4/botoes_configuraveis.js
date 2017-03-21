@@ -186,12 +186,12 @@ var x = 0, y = 0,
 //var sphere = document.getElementById("sphere");
 var coords = document.createElement("span");
 
-/*var Y = document.createElement("span");
-var Z = document.createElement("span");
-*/
-document.getElementById("conectar").appendChild(coords);/*
-document.getElementById("conectar").appendChild(Y);
-document.getElementById("conectar").appendChild(Z);*/
+//var Y = document.createElement("span");
+//var Z = document.createElement("span");
+
+//document.getElementById("conectar").appendChild(coords);
+//document.getElementById("conectar").appendChild(Y);
+//document.getElementById("conectar").appendChild(Z);
 
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
@@ -202,18 +202,16 @@ if (window.DeviceMotionEvent != undefined) {
       e.accelerationIncludingGravity.z+"  \n"
       );
     coords.appendChild(txt_coord);
-    /*Y.appendChild(document.createTextNode(e.accelerationIncludingGravity.y));
-    Z.appendChild(document.createTextNode(e.accelerationIncludingGravity.z));
-    */
-/*
-    if ( e.rotationRate ) {
-      document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
-      document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
-      document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
-    }   
-    */
+    //Y.appendChild(document.createTextNode(e.accelerationIncludingGravity.y));
+    //Z.appendChild(document.createTextNode(e.accelerationIncludingGravity.z));
+  
+    //if ( e.rotationRate ) {
+      //document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
+      //document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
+      //document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
+    //}   
   }
-
+/*
   setInterval( function() {
     var landscapeOrientation = window.innerWidth/window.innerHeight > 1;
     if ( landscapeOrientation) {
@@ -244,3 +242,4 @@ function boundingBoxCheck(){
   if (y>document.documentElement.clientHeight-20) { y = document.documentElement.clientHeight-20; vy = -vy; }
   
 }
+*/
