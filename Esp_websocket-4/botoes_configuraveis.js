@@ -176,7 +176,7 @@ function enviarPy(texto){
   doSend(texto);
 }
 
-
+/*
 
 
 var x = 0, y = 0,
@@ -210,7 +210,7 @@ if (window.DeviceMotionEvent != undefined) {
       //document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
       //document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
     //}   
-  }
+  }*/
 /*
   setInterval( function() {
     var landscapeOrientation = window.innerWidth/window.innerHeight > 1;
