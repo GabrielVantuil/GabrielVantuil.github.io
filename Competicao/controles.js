@@ -73,7 +73,6 @@ controles_config_checkbox.onchange= function(){
 
 
 
-
 /*
 var funcao_frente = document.createElement("textarea");
 var funcao_tras = document.createElement("textarea");
