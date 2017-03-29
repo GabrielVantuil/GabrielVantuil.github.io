@@ -144,6 +144,38 @@ function enviarPy(texto){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /*
   if(elemTipo=="tabela"){
     var tabela = document.createElement("table");
