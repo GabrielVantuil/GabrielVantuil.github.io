@@ -57,9 +57,6 @@ var pw_flag=0;
 
   }
   window.addEventListener("load", init, false);
-  function sendText() {
-    doSend( document.getElementById("entrada").value);
-  }
   function clearText() {
     document.getElementById("saida").value = "";   
    }
@@ -72,3 +69,11 @@ var pw_flag=0;
       mudaEstado();
     }
   }
+function enviarPy(texto){
+  texto=texto.replace(/\n/g,"\r");
+  doSend(texto);
+}
+function sendText() {
+    enviarPy(document.getElementById("entrada").value);
+    document.getElementById("entrada").value="";
+}

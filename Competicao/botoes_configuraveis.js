@@ -136,12 +136,6 @@ function enviarJS(texto){
   script.appendChild(texto2);
   document.getElementById("elementos").appendChild(script);
 }
-function enviarPy(texto){
-  texto=texto.replace(/\n/g,"\r");
-  doSend(texto);
-}
-
-
 
 
 
