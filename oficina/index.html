@@ -45,21 +45,6 @@
 		</div>
 		<div class="col-md-6">
 			<h2>Seus botões aqui</h2>
-			<br>
-			<button onclick="botao();">O botao</button>
-			<input type="range" id="PWM" onchange="slider();" min="0" max="1023"></input>
-			<script type="text/javascript">
-				function botao(){
-					var codigo = "from machine import Pin\r" + "pin = Pin(2,Pin.OUT)\r"+ "pin.value(not pin.value())";
-					doSend(codigo);
-				}	
-				function slider(){
-					var valor = document.getElementById("PWM").value;
-					var codigo = "from machine import Pin, PWM\r" + "pin = PWM(Pin(2))\r"+ "pin.duty("+ valor +")";
-					doSend(codigo);
-				}
-			</script>
-			
 
 
 		</div>
