@@ -1,4 +1,3 @@
-    
 var joystick = document.getElementById("joystick");
 
 var config_t = document.createTextNode("joystick");
@@ -76,7 +75,7 @@ function release(event){
                   "p2 = machine.Pin(2)"+'\n'+'\r'+
                   "p2 = machine.PWM(p2)"+'\n'+'\r'+
                   "p2.freq(500)"+'\n'+'\r'+
-                  "p2.duty(" + (1023-desloc[1]*2)+")";
+                  "p2.duty(" + (valor)+")";
     doSend(comandos);
     */
       

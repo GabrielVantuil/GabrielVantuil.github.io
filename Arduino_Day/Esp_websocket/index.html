@@ -9,6 +9,8 @@
 
 <script language="javascript" type="text/javascript">
 var isconnected=0;
+var pw_buffer;
+var pw_flag=0;
   function mudaEstado(){
     if(isconnected){
       doDisconnect();
@@ -18,7 +20,7 @@ var isconnected=0;
     }
   }
   function init(){
-    document.getElementById("ip").defaultValue = "ws://192.168.0.17:8266/";
+    document.getElementById("ip").defaultValue = "ws://192.168.0.118:8266/";
   	document.getElementById("entrada").value = "esp8266";
   }
 
@@ -34,8 +36,9 @@ var isconnected=0;
     writeToScreen("connected\n");
     document.getElementById("connectButton").value="Desconectar"; //////////////////////////////////////////////
     isconnected=1;
+    doSend(document.getElementById("senha").value);
   }
-
+    
   function onClose(evt)  {
     writeToScreen("disconnected\n");
     document.getElementById("connectButton").value="Conectar"; //////////////////////////////////////////////
@@ -43,12 +46,12 @@ var isconnected=0;
   }
 
   function onMessage(evt)  {
-    writeToScreen(evt.data );//">>>  " +    + '\n'
+    writeToScreen(evt.data);
   }
 
   function onError(evt)  {
     writeToScreen('error: ' + evt.data + '\n');
-  	websocket.close();
+    websocket.close();
     document.getElementById("connectButton").value="Conectar"; //////////////////////////////////////////////
     isconnected=0;
   }
@@ -68,17 +71,24 @@ var isconnected=0;
     doSend( document.getElementById("entrada").value );
   }
   function clearText() {
-    document.getElementById("saida").value = "";     
+    document.getElementById("saida").value = "";   
    }
-   function doDisconnect() {
-		websocket.close();
-   }
+  function doDisconnect() {
+    websocket.close();
+  }
+  function IPenter(event){
+    var tecla=event.keyCode;
+    if(tecla==13){
+      mudaEstado();
+    }
+  }
 </script>
 <link rel="stylesheet" type="text/css" href="websocket.css">
 <div id="output">
   <div id= "form" >
     <p id="conectar">
-      <input type="text" id="ip" name="url"></input>
+      <input type="text" id="ip" name="url" onkeydown="IPenter(event)"></input>
+      <input type="text" id="senha" placeholder="Senha" value="esp8266"></input>
       <input type="button" id ="connectButton" name=connectButton value="Connect" onClick="mudaEstado();">
     </p>
       <br>
@@ -93,9 +103,12 @@ var isconnected=0;
     <div>
       Titulo:    
       <input id="nome" type="text" value="click"> <br>
-    </div>
+    </div> <!aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaqui>
     <button onclick="cria('botao')" name="tipo" id="botao" > Botão </button>
     <button onclick="cria('slider')" name="tipo" id="slider"> Slider </button>
+    <div id="select_tab">
+      
+    </div>
   </p>
     <p id="elementos"></p>
 </div>
