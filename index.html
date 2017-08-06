@@ -21,22 +21,29 @@
     position: absolute;
     top: 42%;
     width: 100%;
-    vertical-align: middle;
     text-align: center;
+  }
+  @media only screen and (max-width: 790px) {
+      [class="center"] {
+        top: 33%;
+      }
+      [class="itens"]{
+        display: block;
+        margin: 0px;
+      }
   }
 </style>
 <body align="left" >
     <div class="center" >
       <a class="name">Gabriel</a>
       <a class="name">Vantuil</a>
-    <h4>
-      <div style="padding-top: 20px">
-        <a class="itens" href="./about.html">About me</a>
-        <a class="itens" href="./projects.html">Projects</a>
-        <a class="itens" href="./contact.html">Contact</a>
-      </div>
-    </h4>
-  </div>
-
+      <h3>
+        <div style="padding-top: 20px" class="menu">
+          <a class="itens" href="./about.html">About me</a>
+          <a class="itens" href="./projects.html">Projects</a>
+          <a class="itens" href="./contact.html">Contact</a>
+        </div>
+      </h3>
+    </div>
 </body>
 </html>
