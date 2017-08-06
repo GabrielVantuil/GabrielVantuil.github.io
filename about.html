@@ -8,6 +8,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="./css/menu.css" type="text/css" rel="stylesheet"/>
 <link rel="icon" href="favicon.jpg" type="image/gif" sizes="16x16">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body{
     position: absolute;
@@ -17,13 +18,19 @@
     width: 100%;
   }
   .foto{    
-     max-width: 100%;
-     padding-right: 10%;
-     display: table-cell; 
-     float:left
+    width: 200px;
+    padding-right: 50px;
+    float:left
+  }
+  @media only screen and (max-width: 790px) {
+      [class="foto"] {
+        width: 100%;
+        margin-bottom: 20px; 
+        padding: 0;
+      }
   }
   .item_bloco{
-    //display:  block;//table-row-group;
+    display: table;
   }
   td {
     vertical-align: top;
@@ -50,8 +57,8 @@
   </div>
 
   <div class="conteudo">
-    <div style=" width:300px; text-align: center;float:left">
-      <img src="./images/foto_perfil.jpg" class="foto">
+    <div   style=" text-align: center; float:left" class="foto">
+      <img src="./images/foto_perfil.jpg" style="width: 100%">
     </div>
 
 
