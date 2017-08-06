@@ -1,7 +1,11 @@
-.name{      
+.name{
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 12px;
+  font-size: 250%;
+  margin: 0px;
+  text-align: center;
+  color:#000;
 }
 /*****************Menu 2*****************/
 a {
@@ -18,15 +22,15 @@ a::selection{
 }
 .menu{
   text-align:center;
-  vertical-align: middle;
   margin-top: 0px;
 }
 a:hover{
   text-decoration: none;
-  color:#555;
+  color:#000;
 }
 .itens:hover {
   background-color: #99f;
+  color:#555;
 }
 .atual{
   cursor:default;
