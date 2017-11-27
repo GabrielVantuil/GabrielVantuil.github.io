@@ -41,7 +41,7 @@ function carrega_stl(peca_stl, T_janela_X, T_janela_Y){
 		loader.load( peca_stl, function ( geometry ) {	
 			var material = new THREE.MeshPhongMaterial( { color: 0x000099, specular: 0x111111, shininess: 200 } );
 			var mesh = new THREE.Mesh( geometry, material );
-			mesh.position.set( 0, -0.27, 0);
+			mesh.position.set( 0, -0.27*0, 0);
 			mesh.rotation.set( - Math.PI / 2, 0, 0 );
 			mesh.scale.set(0.2, 0.2, 0.2 );
 			mesh.castShadow = true;
