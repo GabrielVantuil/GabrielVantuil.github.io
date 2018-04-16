@@ -450,6 +450,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_exercícios_5_2">Exercícios 5.2</a></li>
+<li><a href="#_exercícios_6_1">Exercícios 6.1</a></li>
 </ul>
 </div>
 </div>
@@ -1216,6 +1217,105 @@ int main(int argvc, char** argv){
       break;
     }
   }
+  return 0;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercícios_6_1">Exercícios 6.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Desenvolvimento:</p>
+</li>
+<li>
+<p>Resultados:</p>
+</li>
+</ul>
+</div>
+<div id="fig_tilt_shift1" class="imageblock">
+<div class="content">
+<img src="6.1/original.png" alt="original">
+</div>
+<div class="title">Figure 11. Imagem original</div>
+</div>
+<div id="fig_tilt_shift2" class="imageblock">
+<div class="content">
+<img src="6.1/resultado.png" alt="resultado">
+</div>
+<div class="title">Figure 12. resultado</div>
+</div>
+<div id="exa_tilt_shift" class="listingblock">
+<div class="title">tilt_shift.cpp</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+using namespace cv;
+using namespace std;
+
+double alfa;
+int altura_slider = 0;
+int altura_slider_max = 100;
+
+int borramento_slider = 0;
+int borramento_slider_max = 100;
+
+int c_vert_slider = 0;
+int c_vert_slider_max = 100;
+
+Mat image1, image2, blended;
+Mat imageTop;
+
+char TrackbarName[50];
+
+void on_trackbar_blend(int, void*){
+ alfa = (double) altura_slider/altura_slider_max ;
+ addWeighted( image1, alfa, imageTop, 1-alfa, 0.0, blended);
+ imshow("addweighted", blended);
+}
+
+void on_trackbar_line(int, void*){
+  image1.copyTo(imageTop);
+  int limit = borramento_slider*255/100;
+  if(limit &gt; 0){
+	Mat tmp = image2(Rect(0, 0, 256, limit));
+	tmp.copyTo(imageTop(Rect(0, 0, 256, limit)));
+  }
+  on_trackbar_blend(altura_slider,0);
+}
+
+int main(int argvc, char** argv){
+  image1 = imread("blend1.jpg");
+  image2 = imread("blend2.jpg");
+  image2.copyTo(imageTop);
+  namedWindow("addweighted", 1);
+
+  sprintf( TrackbarName, "altura %d", altura_slider_max );
+  createTrackbar( TrackbarName, "addweighted",
+				  &amp;altura_slider,
+				  altura_slider_max,
+				  on_trackbar_blend );
+  on_trackbar_blend(altura_slider, 0 );
+
+  sprintf( TrackbarName, "Borramento %d", borramento_slider_max );
+  createTrackbar( TrackbarName, "addweighted",
+				  &amp;borramento_slider,
+				  borramento_slider_max,
+				  on_trackbar_line);
+  on_trackbar_line(borramento_slider, 0 );
+
+  sprintf( TrackbarName, "centro vertical %d", c_vert_slider_max );
+  createTrackbar( TrackbarName, "addweighted",
+				  &amp;c_vert_slider,
+				  c_vert_slider_max,
+				  on_trackbar_line);
+  on_trackbar_line(c_vert_slider, 0 );
+
+  waitKey(0);
   return 0;
 }</code></pre>
 </div>
