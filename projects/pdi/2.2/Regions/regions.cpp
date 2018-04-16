@@ -31,6 +31,7 @@ int main(int argc , char** argv){
   }
   
   imshow("janela", image);  
+  imwrite("resultado.png", image);
   waitKey();
   return 0;
 }

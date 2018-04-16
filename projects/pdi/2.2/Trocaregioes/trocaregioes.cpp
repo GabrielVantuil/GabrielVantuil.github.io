@@ -37,6 +37,7 @@ int main(int argc , char** argv){
   
   
   imshow("janela", trocada);  
+  imwrite("resultado.png",trocada);
   waitKey();
   return 0;
 }

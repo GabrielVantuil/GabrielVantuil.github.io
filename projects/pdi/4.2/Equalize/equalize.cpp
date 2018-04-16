@@ -17,6 +17,7 @@ int main(int argc, char** argv){
 
   while(1){
     cap >> image;
+    flip(image, image, 1);
 
     cvtColor( image, image, CV_BGR2GRAY );
     equalizeHist( image, equalizada );

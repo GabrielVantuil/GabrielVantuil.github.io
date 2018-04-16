@@ -49,6 +49,8 @@ int main(int argc, char** argv){
   imshow("image", image);
   waitKey();
   imshow("saida", out);
+  
+  imwrite("resultado.png",out);
   waitKey();
   return 0;
 }

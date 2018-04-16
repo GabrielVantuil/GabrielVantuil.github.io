@@ -449,11 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_exercício_4_2_2_motiondetector">Exercício 4.2.2 - MotionDetector</a></li>
 </ul>
 </li>
-<li><a href="#_exercícios_5_2">Exercícios 5.2</a>
-<ul class="sectlevel2">
-<li><a href="#_exercício_5_2_1_laplgauss">Exercício 5.2.1 - LaplGauss</a></li>
-</ul>
-</li>
+<li><a href="#_exercícios_5_2">Exercícios 5.2</a></li>
 </ul>
 </div>
 </div>
@@ -497,7 +493,7 @@ de interesse é preenchida com a negativa da cor anterior. Para encontrar esse v
 </div>
 <div id="fig_regionsR" class="imageblock">
 <div class="content">
-<img src="2.2/resRegions.png" alt="resRegions">
+<img src="2.2/Regions/resultado.png" alt="resultado">
 </div>
 <div class="title">Figure 1. Saída do programa Regions</div>
 </div>
@@ -544,6 +540,7 @@ int main(int argc , char** argv){
   }
 
   imshow("janela", image);
+  imwrite("resultado.png", image);
   waitKey();
   return 0;
 }</code></pre>
@@ -576,7 +573,7 @@ que não haja perda de informações. Logo após ocorre a troca, que consiste em
 </div>
 <div id="fig_trocaregioesE" class="imageblock">
 <div class="content">
-<img src="2.2/resTrocaRegioes.png" alt="resTrocaRegioes">
+<img src="2.2/Trocaregioes/resultado.png" alt="resultado">
 </div>
 <div class="title">Figure 2. Saída do programa TrocaRegioes</div>
 </div>
@@ -629,6 +626,7 @@ int main(int argc , char** argv){
 
 
   imshow("janela", trocada);
+  imwrite("resultado.png",trocada);
   waitKey();
   return 0;
 }</code></pre>
@@ -649,7 +647,26 @@ OpenCV.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Desenvolvimento:</p>
+<p>Desenvolvimento:
+Para solucionar o problema de muitos objetos, foi utilizado um algoritmo que classifica cada objeto com uma cor diferente do
+espaço RGB, sendo que a classificação começa com (0,0,0), e começa a incrementar o vermelho, quando o vermelho alcançar 255
+incrementa o verde e zera o vermelho, o mesmo para azul e verde.</p>
+<div class="literalblock">
+<div class="content">
+<pre> A sequência fica:
+(0,0,0),
+(0,0,1)
+...
+(0,0,255),
+(0,1,0),
+(0,1,1),
+...
+(0,255,255),
+(1,0,0),
+ ...
+(255,255,255).</pre>
+</div>
+</div>
 </li>
 <li>
 <p>Resultados:</p>
@@ -658,7 +675,7 @@ OpenCV.</p>
 </div>
 <div id="fig_solucaoI" class="imageblock">
 <div class="content">
-<img src="3.2/resSolucao.png" alt="resSolucao">
+<img src="3.2/3.2.1/resultado.png" alt="resultado">
 </div>
 <div class="title">Figure 3. Saída do programa Solucao</div>
 </div>
@@ -670,7 +687,7 @@ OpenCV.</p>
 </ul>
 </div>
 <div id="exa_solucao" class="listingblock">
-<div class="title">solucao.cpp</div>
+<div class="title">labeling_3.2.1.cpp</div>
 <div class="content">
 <pre class="pygments highlight"><code data-lang="cpp">#include &lt;iostream&gt;
 #include &lt;opencv2/opencv.hpp&gt;
@@ -723,6 +740,8 @@ int main(int argc, char** argv){
   imshow("image", image);
   waitKey();
   imshow("saida", out);
+
+  imwrite("resultado.png",out);
   waitKey();
   return 0;
 }</code></pre>
@@ -741,7 +760,7 @@ int main(int argc, char** argv){
 <div class="ulist">
 <ul>
 <li>
-<p>Passo 1: Retirar bolhas das bordas.=== Exercicio 4.2.2 - MotionDetector ===</p>
+<p>Passo 1: Retirar bolhas das bordas.</p>
 </li>
 <li>
 <p>Passo 2: Contagem e Rotulação das bolhas como no exemplo.</p>
@@ -758,19 +777,116 @@ int main(int argc, char** argv){
 </ul>
 </div>
 <div class="paragraph">
-<p>Aṕos o procedimento é mostrado no terminal a quantidade de bolhas encontradas. Foi utilizada uma imagem diferente para poder
-testar bolhas com mais de um buraco.</p>
+<p>Aṕos o procedimento é mostrado no terminal a quantidade de bolhas encontradas.</p>
 </div>
 <div id="fig_contaburacos1" class="imageblock">
 <div class="content">
-<img src="ativ3.2/resContaBuracos1.png" alt="resContaBuracos1">
+<img src="3.2/3.2.2/resultado.png" alt="resultado">
 </div>
-<div class="title">Figure 4. Passo 1 programa ContaBuracos</div>
+<div class="title">Figure 4. resultado</div>
+</div>
+<div id="fig_contaburacos2" class="imageblock">
+<div class="content">
+<img src="3.2/3.2.2/terminal.png" alt="terminal">
+</div>
+<div class="title">Figure 5. terminal</div>
 </div>
 <div id="exa_contaburacos" class="listingblock">
-<div class="title">contaburacos.cpp</div>
+<div class="title">labeling_3.2.2.cpp</div>
 <div class="content">
-<pre class="pygments highlight"><code data-lang="cpp">Unresolved directive in index.asc - include::ativ3.2/labeling 3.2.2.cpp[]</code></pre>
+<pre class="pygments highlight"><code data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv){
+  Mat image, mask,out;
+  int width, height;
+  int nobjects=0, nobj_buraco=0;
+  int r=0,g=0,b=0;
+
+  CvPoint p;
+
+
+  image = imread(argv[1],CV_LOAD_IMAGE_GRAYSCALE);
+  cvtColor(image, out, CV_GRAY2RGB);
+  if(!image.data)
+    cout &lt;&lt; "nao abriu " &lt;&lt;argv[1]&lt;&lt; endl;
+
+  width=image.size().width;
+  height=image.size().height;
+
+
+  p.x=0;
+  p.y=0;
+
+//--------------------------- limpa bordas
+  for(int i=0; i&lt;height; i++)
+    if( (out.at&lt;Vec3b&gt;(i,0)[0] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(i,0)[1] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(i,0)[2] == 255)
+        ||
+        (out.at&lt;Vec3b&gt;(i,0)[0] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(i,0)[1] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(i,0)[2] == 255)){
+          p.x=0;
+          p.y=i;
+          floodFill(out,p,CV_RGB(0,0,0));
+        }
+  for(int j=0; j&lt;width; j++)
+    if( (out.at&lt;Vec3b&gt;(0,j)[0] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(0,j)[1] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(0,j)[2] == 255)
+        ||
+        (out.at&lt;Vec3b&gt;(0,j)[0] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(0,j)[1] == 255)&amp;&amp;
+        (out.at&lt;Vec3b&gt;(0,j)[2] == 255)){
+          p.x=j;
+          p.y=0;
+          floodFill(out,p,CV_RGB(0,0,0));
+        }
+//---------------------------
+
+
+  nobjects=0;
+  for(int i=0; i&lt;height; i++)
+    for(int j=0; j&lt;width; j++)
+      if( (out.at&lt;Vec3b&gt;(i,j)[0] == 255)&amp;&amp;
+          (out.at&lt;Vec3b&gt;(i,j)[1] == 255)&amp;&amp;
+          (out.at&lt;Vec3b&gt;(i,j)[2] == 255)){
+            p.x=j;
+            p.y=i;
+            nobjects++;
+            r= nobjects%255;
+            g=(nobjects/255)%255;
+            b= nobjects/(255*255);
+            floodFill(out,p,CV_RGB(r,g,b));//todos obj
+          }
+  p.x=0;
+  p.y=0;
+  floodFill(out,p,CV_RGB(100,100,100));//fundo
+
+  for(int i=0; i&lt;height; i++)
+    for(int j=0; j&lt;width; j++)
+      if( (out.at&lt;Vec3b&gt;(i,j)[0] == 0)&amp;&amp;
+          (out.at&lt;Vec3b&gt;(i,j)[1] == 0)&amp;&amp;
+          (out.at&lt;Vec3b&gt;(i,j)[2] == 0)){
+            p.x=j;
+            p.y=i;
+            floodFill(out,p,CV_RGB(254,254,254));//buracos dentro de objetos
+            nobj_buraco++;
+          }
+
+  cout&lt;&lt;"\nObjetos sem buracos "&lt;&lt;nobjects-nobj_buraco&lt;&lt;endl;
+  cout&lt;&lt;"\nObjetos com buracos "&lt;&lt;nobj_buraco&lt;&lt;endl;
+  imshow("image", image);
+  waitKey();
+  imshow("saida", out);
+  imwrite("resultado.png",out);
+  waitKey();
+  return 0;
+}</code></pre>
 </div>
 </div>
 </div>
@@ -784,7 +900,8 @@ testar bolhas com mais de um buraco.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Desenvolvimento:</p>
+<p>Desenvolvimento:
+Para realizar a equalização de histograma, foi utilizada a função equalizeHist() da biblioteca opencv.</p>
 </li>
 <li>
 <p>Resultados:</p>
@@ -793,9 +910,15 @@ testar bolhas com mais de um buraco.</p>
 </div>
 <div id="fig_equalize1" class="imageblock">
 <div class="content">
-<img src="4.2/.png" alt=".png">
+<img src="4.2/Equalize/Original.png" alt="Original">
 </div>
-<div class="title">Figure 5. Entrada do programa Equalize</div>
+<div class="title">Figure 6. Imagem Original</div>
+</div>
+<div id="fig_equalize2" class="imageblock">
+<div class="content">
+<img src="4.2/Equalize/Equalizada.png" alt="Equalizada">
+</div>
+<div class="title">Figure 7. Imagem Equalizada</div>
 </div>
 <div id="exa_equalize" class="listingblock">
 <div class="title">equalize.cpp</div>
@@ -819,6 +942,7 @@ int main(int argc, char** argv){
 
   while(1){
     cap &gt;&gt; image;
+    flip(image, image, 1);
 
     cvtColor( image, image, CV_BGR2GRAY );
     equalizeHist( image, equalizada );
@@ -840,7 +964,9 @@ int main(int argc, char** argv){
 <div class="ulist">
 <ul>
 <li>
-<p>Desenvolvimento:</p>
+<p>Desenvolvimento:
+Ao detectar a uma SAD (soma de diferenças absolutas) entre dois histogramas maior do que um valor pré definido (no exemplo: 30000),
+imprime no terminal a mensagem avisando que houve movimento (significativo) e o valor da SAD.</p>
 </li>
 <li>
 <p>Resultados:</p>
@@ -849,9 +975,9 @@ int main(int argc, char** argv){
 </div>
 <div id="fig_motiondetector" class="imageblock">
 <div class="content">
-<img src="4.2/.png" alt=".png">
+<img src="4.2/Motiondetector/terminal.png" alt="terminal">
 </div>
-<div class="title">Figure 6. Terminal do programa MotionDetector</div>
+<div class="title">Figure 8. Terminal do programa MotionDetector</div>
 </div>
 <div id="exa_motiondetector" class="listingblock">
 <div class="title">motiondetector.cpp</div>
@@ -923,15 +1049,11 @@ int main(int argc, char** argv){
 <div class="sect1">
 <h2 id="_exercícios_5_2">Exercícios 5.2</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Capítulo que trata dos estudos de filtragem espacial.</p>
-</div>
-<div class="sect2">
-<h3 id="_exercício_5_2_1_laplgauss">Exercício 5.2.1 - LaplGauss</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Desenvolvimento:</p>
+<p>Desenvolvimento:
+Para realizar o filtro solicitado, foi realizado o filtro gaussiano, e na sequência o laplaciano.</p>
 </li>
 <li>
 <p>Resultados:</p>
@@ -940,9 +1062,15 @@ int main(int argc, char** argv){
 </div>
 <div id="fig_laplgauss1" class="imageblock">
 <div class="content">
-<img src="5.2/resLaplGauss1.png" alt="resLaplGauss1">
+<img src="5.2/original.png" alt="original">
 </div>
-<div class="title">Figure 7. Filtro laplaciano normal</div>
+<div class="title">Figure 9. Imagem original</div>
+</div>
+<div id="fig_laplgauss2" class="imageblock">
+<div class="content">
+<img src="5.2/resultado.png" alt="resultado">
+</div>
+<div class="title">Figure 10. resultado</div>
 </div>
 <div id="exa_laplgauss" class="listingblock">
 <div class="title">laplgauss.cpp</div>
@@ -964,39 +1092,42 @@ void printmask(Mat &amp;m){
 
 void menu(){
   cout &lt;&lt; "\npressione a tecla para ativar o filtro: \n"
-	"a - calcular modulo\n"
-    "m - media\n"
-    "g - gauss\n"
-    "v - vertical\n"
-	"h - horizontal\n"
-    "l - laplaciano\n"
-	"esc - sair\n";
+          "a - calcular modulo\n"
+          "m - media\n"
+          "g - gauss\n"
+          "v - vertical\n"
+          "h - horizontal\n"
+          "l - laplaciano\n"
+          "k - glaussiano depois laplaciano\n"
+          "s - salvar\n"
+	         "esc - sair\n";
 }
 
 int main(int argvc, char** argv){
   VideoCapture video;
   float media[] = {1,1,1,
-				   1,1,1,
-				   1,1,1};
+				            1,1,1,
+				            1,1,1};
   float gauss[] = {1,2,1,
-				   2,4,2,
-				   1,2,1};
+				            2,4,2,
+				            1,2,1};
   float horizontal[]={-1,0,1,
-					  -2,0,2,
-					  -1,0,1};
+					           -2,0,2,
+					           -1,0,1};
   float vertical[]={-1,-2,-1,
-					0,0,0,
-					1,2,1};
+					           0,0,0,
+					           1,2,1};
   float laplacian[]={0,-1,0,
-					 -1,4,-1,
-					 0,-1,0};
+					           -1,4,-1,
+					           0,-1,0};
 
   Mat cap, frame, frame32f, frameFiltered;
   Mat mask(3,3,CV_32F), mask1;
   Mat result, result1;
-  double width, height, min, max;
+  double width, height;
   int absolut;
   char key;
+  bool lapl = false;
 
   video.open(0);
   if(!video.isOpened())
@@ -1021,46 +1152,65 @@ int main(int argvc, char** argv){
     imshow("original", frame);
     frame.convertTo(frame32f, CV_32F);
     filter2D(frame32f, frameFiltered, frame32f.depth(), mask, Point(1,1), 0);
+
+    if(lapl){
+      mask = Mat(3, 3, CV_32F, laplacian);
+      filter2D(frameFiltered, frameFiltered, frame32f.depth(), mask, Point(1,1), 0);
+    }
+
     if(absolut){
       frameFiltered=abs(frameFiltered);
     }
     frameFiltered.convertTo(result, CV_8U);
     imshow("filtroespacial", result);
+
     key = (char) waitKey(10);
     if( key == 27 ) break; // esc pressed!
     switch(key){
     case 'a':
-	  menu();
+	    menu();
       absolut=!absolut;
       break;
     case 'm':
-	  menu();
+	    menu();
       mask = Mat(3, 3, CV_32F, media);
       scaleAdd(mask, 1/9.0, Mat::zeros(3,3,CV_32F), mask1);
       mask = mask1;
       printmask(mask);
       break;
     case 'g':
-	  menu();
+	    menu();
       mask = Mat(3, 3, CV_32F, gauss);
       scaleAdd(mask, 1/16.0, Mat::zeros(3,3,CV_32F), mask1);
       mask = mask1;
       printmask(mask);
       break;
     case 'h':
-	  menu();
+	    menu();
       mask = Mat(3, 3, CV_32F, horizontal);
       printmask(mask);
       break;
     case 'v':
-	  menu();
+	    menu();
       mask = Mat(3, 3, CV_32F, vertical);
       printmask(mask);
       break;
     case 'l':
-	  menu();
+	    menu();
       mask = Mat(3, 3, CV_32F, laplacian);
       printmask(mask);
+      break;
+    case 'k':
+      menu();
+      lapl = !lapl;
+      mask = Mat(3, 3, CV_32F, gauss);
+      scaleAdd(mask, 1/16.0, Mat::zeros(3,3,CV_32F), mask1);
+      mask = mask1;
+      printmask(mask);
+      break;
+    case 's':
+      imwrite("original.png",frame);
+      imwrite("resultado.png", result);
       break;
     default:
       break;
@@ -1068,7 +1218,6 @@ int main(int argvc, char** argv){
   }
   return 0;
 }</code></pre>
-</div>
 </div>
 </div>
 </div>
