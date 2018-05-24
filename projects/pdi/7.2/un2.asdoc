@@ -1,0 +1,19 @@
+== Exercícío 7.2 (Ajuste de iluminação)
+
+
+[text-center]
+image::resultado_dft.jpg[Resultado]
+[caption="Imagem da Transformada Homomórfica"]
+
+A imagem acima mostra o resultado da apliação da transformada homomórfica, utilizando um filtro da gaussiana, para realizar a separação das luzes foi utilizado um raio de 200 e o n igual a 10, manipulando as baixas frequências que é a iluminação ao invés das altas que seria a reflectância.
+
+
+
+
+[source,c++]
+
+
+----
+//No código a seguir é necessário a passagem do valor de n
+include::dft2.cpp[lines=8..34]
+----
