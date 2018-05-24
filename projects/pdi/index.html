@@ -5,8 +5,8 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<meta name="author" content="Gabriel Vantuil">
-<title>Respostas Exercícios de PDI</title>
+<meta name="author" content="Gabriel Teixeira Vantuil">
+<title>Respostas Exercícios de PDI=</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -423,9 +423,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Respostas Exercícios de PDI</h1>
+<h1>Respostas Exercícios de PDI=</h1>
 <div class="details">
-<span id="author" class="author">Gabriel Vantuil</span><br>
+<span id="author" class="author">Gabriel Teixeira Vantuil</span><br>
 <span id="revdate">Luiz Felipe Maciel Correia</span>
 </div>
 <div id="toc" class="toc2">
@@ -1402,31 +1402,31 @@ o valor que será introduzido no algoritmo de canny.</p>
 </li>
 </ul>
 </div>
-<div id="fig_tilt_shift1" class="imageblock">
+<div id="fig_pontilhismo" class="imageblock">
 <div class="content">
 <img src="8.3/image.jpg" alt="image">
 </div>
 <div class="title">Figure 13. Imagem original</div>
 </div>
-<div id="fig_tilt_shift2" class="imageblock">
+<div id="fig_pontilhismo" class="imageblock">
 <div class="content">
 <img src="8.3/pre_view.jpg" alt="pre view">
 </div>
 <div class="title">Figure 14. Pré-visualização</div>
 </div>
-<div id="fig_tilt_shift2" class="imageblock">
+<div id="fig_pontilhismo" class="imageblock">
 <div class="content">
 <img src="8.3/canny.jpg" alt="canny">
 </div>
 <div class="title">Figure 15. filtro canny</div>
 </div>
-<div id="fig_tilt_shift2" class="imageblock">
+<div id="fig_pontilhismo" class="imageblock">
 <div class="content">
 <img src="8.3/final.jpg" alt="final">
 </div>
 <div class="title">Figure 16. final</div>
 </div>
-<div id="exa_tilt_shift" class="listingblock">
+<div id="fig_pontilhismo" class="listingblock">
 <div class="title">cannypoints.cpp</div>
 <div class="content">
 <pre class="pygments highlight"><code data-lang="cpp">#include &lt;iostream&gt;
@@ -1566,9 +1566,55 @@ int main(int argc, char** argv){
 <div class="sect1">
 <h2 id="_exercício_9_2">Exercício 9.2</h2>
 <div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Introdução:</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
-<p>*
-o algoritmo do kmeans tem por finalidade estimar centroides ideais pra uma quantidade de n possíveis amostras espacialmente distribuídas, o algoritmo escolhe o centroide que melhor representa um grupo dentre 'k' grupos e os adiciona a essa categoria, a escolha de um centroide inicial tem impacto fortíssimo na solução inicial do problema e por isso produz-se 10 imagens diferentes.</p>
+<p>O algoritmo do kmeans tem por finalidade estimar centroides ideais pra uma quantidade de n possíveis amostras espacialmente
+distribuídas, o algoritmo escolhe o centroide que melhor representa um grupo dentre 'k' grupos e os adiciona a essa categoria,
+a escolha de um centroide inicial tem impacto fortíssimo na solução inicial do problema e por isso produz-se 10 imagens diferentes.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Desenvolvimento:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Utilizando o codigo de exemplo foram realizadas as alterações solicitadas no número de rodadas (1) e no parâmetro referente a forma de aquisição de centros
+do algoritmo kmeans. Na etapa seguinte, foi desenvolvido um algoritmo para acumular em outra imagem a diferença, em 10 execuções do kmeans, entre o quadro atual e o último calculado para verificar,
+visualmente, se realmente houve alteração dos agrupamentos, pois por se tratar de alterações muito pequenas, torna-se dificil a indentificação
+dessas alterações a olho nu.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Resultados</p>
+</li>
+</ul>
+</div>
+<div id="fig_kmeans" class="imageblock">
+<div class="content">
+<img src="9.2/Original.jpg" alt="Original">
+</div>
+<div class="title">Figure 17. Imagem original</div>
+</div>
+<div id="fig_kmeans" class="imageblock">
+<div class="content">
+<img src="9.2/exemplo.jpg" alt="exemplo">
+</div>
+<div class="title">Figure 18. Exemplo de saida</div>
+</div>
+<div id="fig_kmeans" class="imageblock">
+<div class="content">
+<img src="9.2/diferencas.jpg" alt="diferencas">
+</div>
+<div class="title">Figure 19. Diferencas</div>
 </div>
 </div>
 </div>
