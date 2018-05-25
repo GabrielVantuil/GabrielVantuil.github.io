@@ -1616,6 +1616,75 @@ dessas alterações a olho nu.</p>
 </div>
 <div class="title">Figure 19. Diferencas</div>
 </div>
+<div id="fig_kmeans" class="listingblock">
+<div class="title">kmeans.cpp</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;cstdlib&gt;
+
+using namespace cv;
+using namespace std;
+
+    Mat kmeans2(){
+        int nClusters = 6;
+        Mat rotulos;
+        int nRodadas = 1;
+        Mat centros;
+
+        Mat img = imread("Original.jpg", CV_LOAD_IMAGE_COLOR);
+        Mat samples(img.rows * img.cols, 3, CV_32F);
+
+        for( int y = 0; y &lt; img.rows; y++ ){
+            for( int x = 0; x &lt; img.cols; x++ ){
+            for( int z = 0; z &lt; 3; z++){
+                samples.at&lt;float&gt;(y + x*img.rows, z) = img.at&lt;Vec3b&gt;(y,x)[z];
+            }
+            }
+        }
+
+        kmeans(samples,
+                nClusters,
+                rotulos,
+                TermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 10000, 0.0001),
+                nRodadas,
+                KMEANS_RANDOM_CENTERS,
+                centros );
+
+
+        Mat rotulada( img.size(), img.type() );
+        for( int y = 0; y &lt; img.rows; y++ ){
+            for( int x = 0; x &lt; img.cols; x++ ){
+            int indice = rotulos.at&lt;int&gt;(y + x*img.rows,0);
+            rotulada.at&lt;Vec3b&gt;(y,x)[0] = (uchar) centros.at&lt;float&gt;(indice, 0);
+            rotulada.at&lt;Vec3b&gt;(y,x)[1] = (uchar) centros.at&lt;float&gt;(indice, 1);
+            rotulada.at&lt;Vec3b&gt;(y,x)[2] = (uchar) centros.at&lt;float&gt;(indice, 2);
+            }
+        }
+        //imshow( "clustered image", rotulada );
+        //waitKey( 0 );
+        return rotulada;
+    }
+int main( int argc, char** argv ){
+
+    Mat anterior, atual;
+    anterior = kmeans2();
+    Mat diferencas( anterior.size(), anterior.type() );
+
+    for(int x=0; x&lt;9;x++){
+        atual = kmeans2();
+        diferencas += (anterior - atual);
+        anterior = atual;
+        cout&lt;&lt;x&lt;&lt;"  ";
+    }
+    cout&lt;&lt;endl;
+    imshow("diferencas",diferencas);
+    imwrite("diferencas.jpg", diferencas);
+    imwrite("exemplo.jpg", atual);
+    waitKey(0);
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
