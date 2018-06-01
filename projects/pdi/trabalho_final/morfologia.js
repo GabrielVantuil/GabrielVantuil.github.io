@@ -1,7 +1,7 @@
 
 var px_size = 9;
-var dilate_color = "#666";
-var erode_color = "#ff0";
+var dilate_color = "#0f5";
+var erode_color = "#f00";
 
 
 function setPixel(c, i, j, cor){
