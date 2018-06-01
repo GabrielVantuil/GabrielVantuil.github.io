@@ -44,3 +44,47 @@ a:hover{
   background-color: rgba(0,0,0,.3);
   color:black;
 }
+.projects{
+  margin: 4%;
+  width: 92%;
+  padding: 2%;
+  padding-left: 2%;
+  background-color: rgba(0,0,0,.3);
+  color:black;
+  display: flex;
+  align-items: flex-start;
+}
+.project{
+  margin: 0%;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  padding: 1%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  background-color: rgba(45, 125, 128, 0.795);
+  color:black;
+  display: block;
+  align-self: center;
+  border-style: solid;
+  overflow:hidden;
+}
+.proj_img{
+  width: 100%;
+  margin-top: 9%;
+  margin-bottom: 9%;
+  vertical-align:middle;
+  overflow: hidden;
+}
+.proj_text{
+  border-style: solid;
+  text-align: justify;
+  text-justify: inter-word;
+  overflow: hidden;
+  /*padding: 1%;*/
+
+}
+
+.project:hover{
+cursor:pointer;
+}

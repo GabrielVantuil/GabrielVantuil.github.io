@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bootstrap Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </head>
+<body>
+    Tipo <br>
+    <input type="radio" checked name="saida" id="manter_in">Keep input matrix<br><!Manter matriz de entrada >
+    <input type="radio" name="saida" id="oper_in">Operations on input matriz <br><!Operações direto na matriz de entrada >
+
+    <br>
+    <div class="col-sm-5" style="background-color:lavender;  border: 3px solid #73AD21;" >
+        <br>
+        <canvas id="input" width="600" height="400" style="border:4px solid #73AD21;" onclick="setPixel_mouse(this,event)">Your browser does not support the HTML5 canvas tag.</canvas>
+        <br>
+        <button onclick="clear_mat()">Clear matrix</button>
+    </div>
+    <div class="col-sm-2" style="background-color:lavenderblush;">
+        <br>
+        <canvas id="mask" width="90" height="90" style="border:1px solid #d3d3d3;" onclick="setPixel_mouse(this,event)">Your browser does not support the HTML5 canvas tag.</canvas>
+        <br>
+        <button onclick="morph(1)">Erode</button>
+        <button onclick="morph(0)">Dilate</button>
+    </div>
+    <div class="col-sm-5" style="background-color:lavender;">
+        <br>
+        <canvas id="output" width="600" height="400" style="border:1px solid #d3d3d3;">Your browser does not support the HTML5 canvas tag.</canvas>
+        <br>
+    </div>
+    <p id="demo"></p>
+
+
+        <script src="./morfologia.js"></script> 
+</body>
+</html>
