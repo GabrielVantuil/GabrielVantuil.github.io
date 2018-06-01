@@ -55,6 +55,10 @@ function setPixel_mouse(c,e){
     var mask_size = Math.floor(mask.width/(px_size+1)); 
     quadricular(mask);
 	setPixel(mask,Math.floor(mask_size/2),Math.floor(mask_size/2),"#0ff");
+	setPixel(mask,Math.floor(mask_size/2)+1,Math.floor(mask_size/2),"#000");
+	setPixel(mask,Math.floor(mask_size/2)-1,Math.floor(mask_size/2),"#000");
+	setPixel(mask,Math.floor(mask_size/2),Math.floor(mask_size/2)+1,"#000");
+	setPixel(mask,Math.floor(mask_size/2),Math.floor(mask_size/2)-1,"#000");
     
 /////////////////// tela de trabalho 2 (saida) /////////////////////////////
   	var morph_output = document.getElementById("output");
