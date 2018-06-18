@@ -1,8 +1,62 @@
 
-var px_size = 9;
+var px_size = 9;//document.getElementById("px_size").value;
 var dilate_color = "#0f5";
 var erode_color = "#f00";
+var isclicked=0;
+var X0;
+var Y0;
+var canvas = document.getElementById("input");
+canvas.onmousedown  = function(){ pressed(this,event);};
+canvas.onmouseup    = function(){ isclicked=0;};
+canvas.onmouseout   = function(){ isclicked=0;};
+canvas.onmousemove  = function(){ setPixel_input(this,event);};
 
+var mask = document.getElementById("mask");
+mask.onmousedown  = function(){ pressed(this,event);};
+mask.onmouseup    = function(){ isclicked=0;};
+mask.onmouseout   = function(){ isclicked=0;};
+mask.onmousemove  = function(){ setPixel_input(this,event);};
+
+function pressed(c,event){
+    if(isclicked==0){
+        isclicked=1; 
+        X0 = Math.floor(event.offsetX/(px_size+1)); //centro do pixel inicialmente clicado
+        Y0 = Math.floor(event.offsetY/(px_size+1)); 
+        setPixel_mouse(c,event);
+    }
+}
+
+function setPixel_input(c,e){
+    //document.getElementById("demo").innerHTML = "0: " + X0 +" "+Y0+ "                  1: " + Math.floor(e.offsetX/(px_size+1)) +" "+Math.floor(e.offsetY/(px_size+1));
+    if(isclicked==1){
+        var ctx = c.getContext("2d");
+        var X = Math.floor(e.offsetX/(px_size+1));//centro do pixel atual
+        var Y = Math.floor(e.offsetY/(px_size+1));
+
+        if(X0 != X || Y0 != Y){
+            X0 = Math.floor(e.offsetX/(px_size+1)); //centro do pixel inicialmente clicado
+            Y0 = Math.floor(e.offsetY/(px_size+1));
+            var px =getPixel(c, X0, Y0);
+            //var pix = ctx.getImageData(e.offsetX,e.offsetY, 1, 1).data;
+            //var px= "#" + (pix[0]/16).toString(16)[0]+ (pix[1]/16).toString(16)[0]+ (pix[2]/16).toString(16)[0];
+            if(px=="#fff")         //branco
+                setPixel(c,X,Y,"#000");
+            if(px=="#000")              //preto
+                setPixel(c,X,Y,"#fff");
+        }
+    }
+}
+function setPixel_mouse(c,e){
+  	var ctx = c.getContext("2d");
+	var X = e.offsetX;
+    var Y = e.offsetY;
+	var pix = ctx.getImageData(X,Y, 1, 1).data;
+    var px= "#" + (pix[0]/16).toString(16)[0]+ (pix[1]/16).toString(16)[0]+ (pix[2]/16).toString(16)[0];
+    if(px=="#fff")
+		setPixel(c,Math.floor(X/(px_size+1)),Math.floor(Y/(px_size+1)),"#000");
+    if(px=="#000")
+		setPixel(c,Math.floor(X/(px_size+1)),Math.floor(Y/(px_size+1)),"#fff");
+}
 
 function setPixel(c, i, j, cor){
 	var ctx = c.getContext("2d");
@@ -28,17 +82,6 @@ function quadricular(c){
     for(var j=0;j<c.height/(px_size+1);j++)
       setPixel(c,i,j,"#FFF");
 }
-function setPixel_mouse(c,e){
-  	var ctx = c.getContext("2d");
-	var X = e.offsetX;
-    var Y = e.offsetY;
-	var pix = ctx.getImageData(X,Y, 1, 1).data;
-    var px= "#" + (pix[0]/16).toString(16)[0]+ (pix[1]/16).toString(16)[0]+ (pix[2]/16).toString(16)[0];
-    if(px=="#000")
-		setPixel(c,Math.floor(X/(px_size+1)),Math.floor(Y/(px_size+1)),"#fff");
-    else if(px=="#fff")
-		setPixel(c,Math.floor(X/(px_size+1)),Math.floor(Y/(px_size+1)),"#000");
-}
 /////////////////// tela de trabalho 1 (entrada) /////////////////////////////
   	var morph_input = document.getElementById("input");
   	quadricular(morph_input);
@@ -51,9 +94,8 @@ function setPixel_mouse(c,e){
     setPixel(morph_input,20,15, "#000");
 
 /////////////////// mask /////////////////////////////
-	var mask = document.getElementById("mask");
-    var mask_size = Math.floor(mask.width/(px_size+1)); 
     quadricular(mask);
+    var mask_size = Math.floor(mask.width/(px_size+1)); 
 	setPixel(mask,Math.floor(mask_size/2),Math.floor(mask_size/2),"#0ff");
 	setPixel(mask,Math.floor(mask_size/2)+1,Math.floor(mask_size/2),"#000");
 	setPixel(mask,Math.floor(mask_size/2)-1,Math.floor(mask_size/2),"#000");

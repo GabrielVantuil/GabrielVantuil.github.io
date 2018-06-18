@@ -41,7 +41,6 @@
             text-decoration: none;
             display: inline-block;
             margin: 2px 2px;
-            cursor: pointer;
             border-radius: 5px;
         }
         .bt1:hover {
@@ -59,31 +58,31 @@
     <br>
     <h1 style="text-align: center;margin:auto;">Mathematical morphology</h1>
     <br>
-    <br>
+    <p id="demo"></p>
     <!div class="col-sm-1 canvas_div">   <!/div>
-    <!div class="col-sm-9 canvas_div">
+    <!div class="col-sm-9 canvas_div"       onclick="setPixel_mouse(this,event)">
     <div class="canvas_div" style="text-align: center;margin:auto;">
-        <canvas id="input" width="400" height="400" class="matriz" onclick="setPixel_mouse(this,event)">Your browser does not support the HTML5 canvas tag.</canvas>
+        <canvas id="input" width="400" height="400" class="matriz" >Your browser does not support the HTML5 canvas tag.</canvas>
         <canvas id="output" width="400" height="400" class="matriz" >Your browser does not support the HTML5 canvas tag.</canvas>
         <div   style="overflow: hidden;">
-            <canvas id="mask" width="90" height="90" style="border:1px solid #d3d3d3;" class="matriz" onclick="setPixel_mouse(this,event)">Your browser does not support the HTML5 canvas tag.</canvas>
+            <canvas id="mask" width="90" height="90" style="border:1px solid #d3d3d3;" class="matriz">Your browser does not support the HTML5 canvas tag.</canvas>
             <br>
             <div style="text-align: center;margin: auto;">
                 <button onclick="morph(1)" class="bt1 bt" style="border: 3px solid #F00;">Erode</button>
                 <button onclick="morph(0)" class="bt2 bt" style="border: 3px solid #0f5;">Dilate</button>
             </div>
         </div>
-        <br>
         <div style="text-align: center;margin: auto;">
             <button onclick="clear_mat()" class="bt" >Clear input matrix</button><br><br>
             Operations on:<br>
             <input type="radio" checked name="saida" id="manter_in">Output matrix only<!Manter matriz de entrada >
             <input type="radio" name="saida" id="oper_in">Input matrix  <br><!Operações direto na matriz de entrada >
+             
+            <!Pixel size:><!      input type="number" max="100" style="color: black;" value="9" id= "px_size">
         </div>
     </div>
     <!div class="col-sm-1 canvas_div" >
         <!/div>
-    <p id="demo"></p>
 
 
         <script src="./morfologia.js"></script> 
