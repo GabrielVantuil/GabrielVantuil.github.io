@@ -110,9 +110,19 @@ function clear_mat(){
     quadricular(morph_input);
     quadricular(morph_output);
 }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-
-function morph(erode){
+async function morph(erode){
+    var wait = document.getElementById("wait");
+    wait.innerHTML = "Wait, processing...";
+    await sleep(1);
+    morph2(erode);
+    wait.innerHTML = " ";
+}
+function morph2(erode){
+    
   	quadricular(morph_output);
     var manter = document.getElementById("manter_in").checked;
     for(var i=0;i<morph_input.width/(px_size+1);i++)
@@ -156,6 +166,7 @@ function morph(erode){
             
         }
     }
+//    wait = " ";
 }
 
 
