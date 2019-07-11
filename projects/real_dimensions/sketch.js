@@ -8,6 +8,37 @@ var accel = 1;
 var accel_start_pos=0;
 
 var time_sim = 0;
+
+function createDpiTestElements () {
+    var getDpiHtmlStyle = 'data-dpi-test { height: 1in; left: -100%; position: absolute; top: -100%; width: 1in; }'
+  
+    var head = document.getElementsByTagName('head')[0]
+    var getDPIElement = document.createElement('style')
+    getDPIElement.setAttribute('type', 'text/css')
+    getDPIElement.setAttribute('rel', 'stylesheet')
+    getDPIElement.innerHTML = getDpiHtmlStyle
+    head.appendChild(getDPIElement)
+  
+    var body = document.getElementsByTagName('body')[0]
+    var dpiTestElement = document.createElement('data-dpi-test')
+    dpiTestElement.setAttribute('id', 'dpi-test')
+    body.appendChild(dpiTestElement)
+  }
+  
+  /**
+   * Evaluate the DPI of the device's screen (pixels per inche).
+   * It creates and inpect a dedicated and hidden `data-dpi-test` DOM element to
+   * deduct the screen DPI.
+   * @method
+   * @static
+   * @returns {number} - The current screen DPI, so in pixels per inch.
+   */
+  function getSize() {
+    return sqrt(pow(displayHeight/document.getElementById('dpi-test').offsetHeight,2)  +
+      pow(displayWidth/ document.getElementById('dpi-test').offsetWidth,2));
+  }
+
+
 function setup() {
     frameRate(60);
     createCanvas(windowWidth, windowHeight);
@@ -34,13 +65,16 @@ function setup() {
     
     var d = new Date();
     time_sim = d.getTime()/1000;
+
+    createDpiTestElements();
+    console.log(getSize());
 }
 
 function draw(){
     
     background(0);
 
-    let conv = (sqrt(pow(displayWidth,2) + pow(displayHeight,2)) / screen_size)/25.4;
+    let conv = (sqrt(pow(displayWidth,2) + pow(displayHeight ,2)) / screen_size)/25.4;
     var d = new Date();
     var n = d.getTime()/1000;
 
@@ -56,6 +90,7 @@ function draw(){
     fill(255);
     text("Screen size (in): ", 270, 25);
     text("Simulation time: "+ round(n - time_sim), 270, 50);
+    text("Screen size: (experimental)  "+ getSize(), 270, 75);
     
     let defaultHeight = windowHeight;
     //------------------------------------------ Ruler ------------------------------------------
@@ -81,7 +116,7 @@ function draw(){
     if(pos_x_accel > screenWidth)
         accel_start_pos = n;
     pos_x_accel = (pow(n-accel_start_pos,2)*accel/2); //position in mm
-    rect(windowWidth/50+pos_x_accel*conv, defaultHeight-60, 60,10);
+    rect(windowWidth/50+pos_x_accel*conv, defaultHeight-60, 60, 10);
     text(round(10*(n-accel_start_pos)*accel)/10 +"mm/s", windowWidth/50+pos_x_accel*conv+30, defaultHeight-60);
 
 }
