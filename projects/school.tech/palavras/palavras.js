@@ -18,11 +18,20 @@ var obj = {
         {"palavra": "coice", "letra": "c"},
         {"palavra": "meiguice", "letra": "c"},
         {"palavra": "precioso", "letra": "c"},
-        {"palavra": "civilizado", "letra": "c"},
         {"palavra": "muçulmano", "letra": "ç"},
-        {"palavra": "araçá", "letra": "ç"}
+        {"palavra": "estilhaçar", "letra": "ç"},
+        {"palavra": "civilizado", "letra": "c"},
+        {"palavra": "caçar", "letra": "ç"},
+        {"palavra": "preguiça", "letra": "ç"}
     ]
 };
+
+
+
+
+
+
+
 
 
 
