@@ -54,19 +54,25 @@ function draw(){
 
     //palavras corrigidas
     let letra_1 = 1;
-    let tamanhoLetra = 20;
-    textSize(tamanhoLetra);  fill(255,0,255);  textAlign(LEFT)
+    let tamanhoLetra = 30;
+
+    textAlign(LEFT);
     for(let i = 0; i<indiceAtual; i++){
         if(acertos[i]) 
             fill(0,255,0);
         else
             fill(255,0,0);
+        if(name == "professor")
+            tamanhoLetra = 20;
+
+        textSize(tamanhoLetra); 
+
         if(palavras[i][1] == letras[0]){
-            text(palavras[i][0], windowWidth*1/15, windowHeight*1/15 + tamanhoLetra*(letra_1));
+            text(palavras[i][0], windowWidth*1/15 , windowHeight*1/15 + tamanhoLetra*(letra_1 % palavras.length));
             letra_1++;
         }
         else
-            text(palavras[i][0], windowWidth*12/15, windowHeight*1/15 + tamanhoLetra*(2+i-letra_1));
+            text(palavras[i][0], windowWidth*12/15, windowHeight*1/15 + tamanhoLetra*((2+i-letra_1) % palavras.length ) );
     }
     
 }
@@ -88,6 +94,8 @@ function keyPressed() {
 
 function mouseClicked() {
     
+    textSize(50);  fill(0,0,150);
+    text(mouseX, windowWidth/2, windowHeight/2+70);
     if(name == "professor" && (indiceAtual < palavras.length)){
         acertos[indiceAtual] = 1;
         indiceAtual++;
