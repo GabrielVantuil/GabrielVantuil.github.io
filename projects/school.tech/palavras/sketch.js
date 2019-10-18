@@ -71,21 +71,29 @@ function draw(){
     
 }
 
+function clickLetra(letra){
 
-function keyPressed() {
-    if((key.toLowerCase() == letras[0] || key.toLowerCase() == letras[1]) && (indiceAtual < palavras.length)){
-        if(palavras[indiceAtual][1] == key.toLowerCase())
+    if((letra == letras[0] || letra == letras[1]) && (indiceAtual < palavras.length)){
+        if(palavras[indiceAtual][1] == letra)
             acertos[indiceAtual] = 1;
         else
             acertos[indiceAtual] = 0;
         indiceAtual++;
-
     }
 }
 
+function keyPressed() {
+    clickLetra(key.toLowerCase());
+}
+
 function mouseClicked() {
+    
     if(name == "professor" && (indiceAtual < palavras.length)){
         acertos[indiceAtual] = 1;
         indiceAtual++;
     }
+    else if(mouseX < windowWidth/2)
+        clickLetra(letras[0]);
+    else if(mouseX > windowWidth/2)
+        clickLetra(letras[1]);
 }
