@@ -7,20 +7,38 @@
    * @returns {number} - The current screen DPI, so in pixels per inch.
    */
 
-function setup() {
-    frameRate(60);
-    createCanvas(windowWidth, windowHeight);
-    // var input_screen = createInput(screen_size,"number");
-    // input_screen.input(screen_size_input);
-    // input_screen.size(50);   
-    // input_screen.position(370, 10);
-    
-}
 var indiceAtual = 0;
 var acertos = [];
 
-let params = new URLSearchParams(document.location.search.substring(1));
-let name = params.get("usuario");
+let params;
+let name;
+let letrasPassadas;
+
+var palavras = [];
+var letras = [];
+let ObjJSON;
+
+function getPalavrasJSON(Letras){
+    ObjJSON = loadJSON("palavras.json");
+
+    letras[0] = Letras[0];
+    letras[1] = Letras[1];
+    console.log(ObjJSON);
+    for(let i = 0; i < ObjJSON[letrasPassadas].length; i++){
+        palavras[i] = ObjJSON[letrasPassadas][i].palavra;
+    }
+}
+
+function getPalavrasJS(Letras){
+    ObjJSON = obj;
+
+    letras[0] = Letras[0];
+    letras[1] = Letras[1];
+    console.log(ObjJSON);
+    for(let i = 0; i < ObjJSON[letrasPassadas].length; i++){
+        palavras[i] = [ObjJSON[letrasPassadas][i].palavra, ObjJSON[letrasPassadas][i].letra];
+    }
+}
 
 function soma(numeros){
     let x=0;
@@ -28,6 +46,20 @@ function soma(numeros){
     return x;
 }
 
+function setup() {
+    params = new URLSearchParams(document.location.search.substring(1));
+    name = params.get("usuario");
+    letrasPassadas = params.get("letras");
+
+
+    frameRate(60);
+    createCanvas(windowWidth, windowHeight);
+    
+    if(letrasPassadas == null)
+        letrasPassadas = 'sz';
+    //getPalavrasJSON(letrasPassadas);
+    getPalavrasJS(letrasPassadas);
+}
 function draw(){
     
     background(0);
@@ -78,7 +110,7 @@ function draw(){
 }
 
 function clickLetra(letra){
-
+    // console.log(letra);
     if((letra == letras[0] || letra == letras[1]) && (indiceAtual < palavras.length)){
         if(palavras[indiceAtual][1] == letra)
             acertos[indiceAtual] = 1;
@@ -89,6 +121,7 @@ function clickLetra(letra){
 }
 
 function keyPressed() {
+    if(key == 'º') clickLetra('ç');
     clickLetra(key.toLowerCase());
 }
 
