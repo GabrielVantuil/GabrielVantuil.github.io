@@ -1,0 +1,6 @@
+- Adicionar angulos de varredura
+    - 45º
+    - vertical
+    - misto
+- Visualização:
+    - Redimensionar para visualização de tamanho definido.

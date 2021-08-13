@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+        <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
+        <script language="javascript" type="text/javascript" src="sketch.js"></script>
+        <link href="style.css" type="text/css" rel="stylesheet"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- CSS only -->
+        <script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    </head>
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+    
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    /* .canvas{
+        width: 100%;
+        height: 100%;
+    } */
+    </style>
+    <body style="background-color:#aaa;">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <input type='file' accept='.gbr' onchange='openFile(event)' id= "file"><br>
+                    <button onclick='convert()'>Convert</button><br><br>
+                    
+                    <button onclick="download()">
+                        Create file
+                    </button>
+                    <table>
+                        <tr>
+                            <td>Laser on CMD</td> 
+                            <td><input type='text' id="L_ON" value="M106 S255"><td>
+                        </tr>
+                        <tr>
+                            <td>Laser off CMD</td> 
+                            <td><input type='text' id="L_OFF" value="M107"><td>
+                        </tr>
+                        <tr>
+                            <td>Bean horizontal size (mm)</td> 
+                            <td><input type='text' id="beanHsize" value="0.2"><td>
+                        </tr>
+                        <tr>
+                            <td>Bean vertical size (mm)</td> 
+                            <td><input type='text' id="beanVsize" value="0.2"><td>
+                        </tr>
+                        <tr>
+                            <td>Lines/mm</td> 
+                            <td><input type='number' id="linesPerMM" value="10" min="1" step="1">
+                                <!-- <span class="tooltiptext">Lowering this leads to bigger slicing time and bigger printing time</span> -->
+                            <td>
+                        </tr>
+                        <tr>
+                            <td>Laser on speed (mm/min)</td> 
+                            <td><input type='number' id="burn_speed" value="500" min="0"><td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Laser off speed (mm/min)</td> 
+                            <td><input type='number' id="no_burn_speed" value="1000" min="0"><td>
+                        </tr> -->
+                        <tr>
+                            <td>Travel speed (mm/min)</td> 
+                            <td><input type='number' id="travel_speed" value="5000" min="0"><td>
+                        </tr>
+                        <tr>
+                            <td>Distance to change speed (mm)</td> 
+                            <td>
+                                <input disabled type='number' id="dist_change" value="2" min="0">
+                                <!-- <span class="tooltiptext">The program will automatically change to the lowerest speed when the distance is smaller then this number. This is made to improve quality even with bigger "burning speeds". It's needed to compensate inertia</span> -->
+                            <td>
+                        </tr>
+                        <tr>
+                            <td>Border clearance (mm)</td> 
+                            <td><input disabled type='number' id="border_clearance" value="1" min="0"><td>
+                        </tr>
+                        <!-- <tr>
+                            <td>asdasdasdasd </td> 
+                            <td>
+                                <select name="cars" id="cars">
+                                    <option value="Horizontal"> Horizontal</option>
+                                    <option value="Vertical">   Vertical</option>
+                                    <option value="Diagonal">   Diagonal</option>
+                                    <option value="Diagonal inverse">Diagonal inverse</option>
+                                    <option value="threetipes">3 directions</option>
+                                </select>
+                            <td>
+                        </tr> -->
+                    </table>
+                    <div class="container" style="background-color:#bbb;">
+                        <div class="row">
+                            <div class="col-6"><h3>Gcode output</h3></div>
+                            <div class="col-4" id="estimated_time_label">Estimated time: </div>
+                            <div class="col-2" id="est_time">0</div>
+                        </div>
+                        <!-- <progress id="progress_bar" value="0" max="100"></progress> -->
+                        <div class="row">
+                            <div id='output'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" style="background-color:rgb(218, 218, 218);">
+                    <div id="viewerDiv" style="height: 100%;">
+                        <!-- <canvas id="canvas" class="canvas"></canvas> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
