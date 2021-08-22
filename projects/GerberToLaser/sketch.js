@@ -3,18 +3,20 @@ var laserOnCMD, laserOffCMD;
 let burnSpeed = 300;
 let travelSpeed = 5000;
 let beanHsize, beanVsize;
+let borderClearance;
 
 var fileLines;
 var file;
 var converted =[];
-let canvas, mat;
+let inputCanvas, outputCanvas;
+let mat, matOut, matOrig;
 let bgColor;
 let wireColor;
 let gcode=[];
 let boundaries;
 let grb_widths = [];
 let isConverted =0;
-
+let showingPreview = false;
 
 const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -88,10 +90,10 @@ function drawBoard(codes){
 
     codes.forEach(code => {
         if(code.d == 1){
-            line(code.x,
-                height - code.y,
-                lastPoint.x,
-                height - lastPoint.y
+            line(code.x + borderClearance,
+                height - code.y - borderClearance,
+                lastPoint.x + borderClearance,
+                height - lastPoint.y - borderClearance
             );
             lastPoint = code;
         }
@@ -100,10 +102,10 @@ function drawBoard(codes){
         }
         else if(code.d == 3){   //draw one shape
             strokeWeight(0);
-            if(drawType == "round")     ellipse(code.x, height - code.y, diameter, diameter);
+            if(drawType == "round")     ellipse(code.x + borderClearance, height - code.y - borderClearance, diameter, diameter);
             if(drawType == "donut");
-            if(drawType == "rect")      rect((code.x - diameter/2), height - code.y - linesPerMM * param0/2, diameter, linesPerMM * param0);
-            if(drawType == "polygon")   polygon(code.x, height - code.y, diameter/2, param0, param1);
+            if(drawType == "rect")      rect(code.x - diameter/2 + borderClearance, height - code.y - linesPerMM * param0/2  - borderClearance, diameter, linesPerMM * param0);
+            if(drawType == "polygon")   polygon(code.x + borderClearance, height - code.y - borderClearance, diameter/2, param0, param1);
         }
         else if(code.d >= 10){
             grb_widths.forEach(w =>{
@@ -117,6 +119,27 @@ function drawBoard(codes){
             strokeWeight(diameter);
         }
     });
+    roundBoardColors();
+}
+function roundBoardColors(){
+    let original = cv.imread(canvas);
+    let sumRgbBg = bgColor[0]+bgColor[1]+bgColor[2];
+    let sumRgbWire = wireColor[0]+wireColor[1]+wireColor[2];
+    let Bg_GT_wire = sumRgbBg > sumRgbWire;
+    for(let Yi = 0; Yi < height; Yi++){
+        for(let Xi = 0; Xi < width; Xi++){
+            let current = original.ucharPtr(Yi, Xi)[0]+original.ucharPtr(Yi, Xi)[1]+original.ucharPtr(Yi, Xi)[2];
+            if(current > (sumRgbBg/2+sumRgbWire/2)){
+                if(Bg_GT_wire)  setPixelColor(original, [Yi, Xi], bgColor[0],bgColor[1],bgColor[2],255);
+                else            setPixelColor(original, [Yi, Xi], wireColor[0],wireColor[1],wireColor[2],255);
+            }
+            else{
+                if(Bg_GT_wire)  setPixelColor(original, [Yi, Xi], wireColor[0],wireColor[1],wireColor[2],255);
+                else            setPixelColor(original, [Yi, Xi], bgColor[0],bgColor[1],bgColor[2],255);
+            }
+        }
+    }
+    cv.imshow(canvas, original);    
 }
 function convertHeaders(file){
     let converted = [];
@@ -150,10 +173,12 @@ function convert(){
     converted = convertHeaders(file);
     boundaries = findBoundaries(converted, grb_widths);
 
-    if(canvas) canvas.remove();
-    createCanvas(Math.round(boundaries.biggest.x), Math.round(boundaries.biggest.y));
-    canvas = document.getElementById("defaultCanvas0");
-    viewerDiv.append(canvas);
+    if(inputCanvas) inputCanvas.remove();
+    createCanvas(Math.round(boundaries.biggest.x + borderClearance*2), Math.round(boundaries.biggest.y + borderClearance*2));
+    //createCanvas(Math.round(boundaries.biggest.x), Math.round(boundaries.biggest.y));
+    inputCanvas = document.getElementById("defaultCanvas0");
+    //outputCanvas = document.getElementById("defaultCanvas1");
+    viewerDiv.append(inputCanvas);
     background(bgColor);
     strokeWeight(1);
 
@@ -166,9 +191,8 @@ function convert(){
     $('#est_time').show();
     let estimated_time = (boundaries.biggest.y*boundaries.biggest.x/linesPerMM)*(1/int(burnSpeed) + 1/int(travelSpeed));
     $('#est_time').html(floor(estimated_time)+"min" + int((estimated_time%1)*60)+"s" );
-
-    
-    
+    $("#preview_bt").prop("disabled", false);
+    $("#download_bt").prop("disabled", false)
 };
 function updateParameters(){
     linesPerMM = parseFloat($('#linesPerMM').val());
@@ -178,47 +202,48 @@ function updateParameters(){
     travelSpeed = $('#travel_speed').val();
     beanHsize  = parseFloat($('#beanHsize').val());
     beanVsize  = parseFloat($('#beanVsize').val());
+    borderClearance = parseFloat($('#border_clearance').val()) * linesPerMM;
 }
 
 function writeGcode(){
-    let currentPixel=[height,0];
-    let lastPixel=-1;
-    gcode = "";
-    mat = cv.imread(canvas);
-    
-    //let wireColorOpenCV = wireColor[1];
-    let wireColorOpenCV = wireColor;
+    matOrig = cv.imread(inputCanvas);
+    mat = matOrig.clone();
+    matOut = matOrig.clone();
+
     let beanVertRadius = round((beanVsize/2)*linesPerMM);
+    let lastPixel=-1;
+    let currentPixelResult, lastPixelResult;
+    gcode = "";
+    
 
-
+    let laserON_debug=false;
+    let currentPixel = vertPixelComp([height,0], wireColor, beanVertRadius);
+    testVert(wireColor, beanVertRadius);
     for(let Yi = 0; Yi < height; Yi++){
         gcode+= laserOffCMD+ "\n";
         gcode+= "G01 F" + travelSpeed +" X0Y" + (Yi/linesPerMM).toFixed(2) + "\n";    
         gcode+= laserOnCMD+ "\n";
+        laserON_debug = true;
         for(let Xi = 0; Xi < width; Xi++){
             lastPixel = currentPixel;
-            // //currentPixel=get(Xi, height-Yi-1)[1];
-            // currentPixel = mat.ucharPtr(height-Yi-1, Xi)[1];
-            // if(equals(lastPixel, wireColorOpenCV) && !equals(currentPixel, wireColorOpenCV)){ //finds right borders  
-            //     gcode += "G01 F" + burnSpeed + " X" +(Xi/linesPerMM + beanDiameter/2).toFixed(2)+"\n";
-            //     gcode += laserOnCMD+ "\n";
-            // }
-            // if(equals(currentPixel, wireColorOpenCV) && !equals(lastPixel, wireColorOpenCV)){ //finds left borders  
-            //     gcode += "G01 F" + burnSpeed + " X"+ (Xi/linesPerMM - beanDiameter/2).toFixed(2)+"\n";
-            //     gcode += laserOffCMD+ "\n";
-            // }
-
+            lastPixelResult = currentPixelResult;
 
             currentPixel = [height-Yi-1, Xi];
-
-            if(vertPixelComp(lastPixel, wireColor, beanVertRadius) && !vertPixelComp(currentPixel, wireColor, beanVertRadius)){ //finds right borders  
+            currentPixelResult = mat.ucharPtr(currentPixel[0],currentPixel[1])[0]==0 ;
+            
+            if(lastPixelResult && !currentPixelResult){ //finds right borders  
                 gcode += "G01 F" + burnSpeed + " X" +(Xi/linesPerMM + beanHsize/2).toFixed(2)+"\n";
                 gcode += laserOnCMD+ "\n";
+                laserON_debug = true;
+                //setPixelColor(matOut, lastPixel, 0,255,255,255);
             }
-            if(vertPixelComp(currentPixel, wireColor, beanVertRadius) && !vertPixelComp(lastPixel, wireColor, beanVertRadius)){ //finds left borders  
+            if(currentPixelResult && !lastPixelResult){ //finds left borders  
                 gcode += "G01 F" + burnSpeed + " X"+ (Xi/linesPerMM - beanHsize/2).toFixed(2)+"\n";
                 gcode += laserOffCMD+ "\n";
+                laserON_debug = false;
+                //setPixelColor(matOut, lastPixel, 255,255,0,255);//yellow
             }
+            colorPixelPreview(currentPixel, laserON_debug);
         }
         gcode += "G01 F" + burnSpeed + " X"+ (width/linesPerMM + beanHsize/2).toFixed(2)+"\n";
         //document.getElementById("progress_bar").value = (Yi+1)/height*100;
@@ -228,20 +253,77 @@ function writeGcode(){
     gcode+= "M84\n";
     isConverted = 1;
 }
-function vertPixelComp(px1, color, radius){   //returns true if any of the pixels vertically within the radius is equal
-    for(let y = 1; y<=radius; y++){
-        if(px1[0] >= y){  //block negative coords
-            if(mat.ucharPtr(px1[0] - y, px1[1]).every((val, index) => val == color[index]))
-                return true;
-        }
-        if((px1[0] + y) < height){//block off screen coords
-            if(mat.ucharPtr(px1[0] + y, px1[1]).every((val, index) => val == color[index]))
-                return true;
+function compareCoordsToColor(X,Y,color){
+    return matOrig.ucharPtr(X, Y).every((val, index) => val == color[index])
+}
+function setPixelColor(src, px, R, G, B, A){
+    src.ucharPtr(px[0], px[1])[0] = R;
+    src.ucharPtr(px[0], px[1])[1] = G; 
+    src.ucharPtr(px[0], px[1])[2] = B; 
+    src.ucharPtr(px[0], px[1])[3] = A; 
+}
+function colorPixelPreview(pixel, state){
+    if(state)   setPixelColor(matOut, pixel, 0,0,200,255);
+    else        setPixelColor(matOut, pixel, 200,0,0,255);
+}
+function testVert(color, beanVertRadius){
+    let currentPixel;
+    for(let Yi = 0; Yi < height; Yi++){
+        for(let Xi = 0; Xi < width; Xi++){
+            currentPixel = [height-Yi-1, Xi];
+            if(vertPixelComp(currentPixel, color, beanVertRadius)){
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[0] = 0;
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[1] = 200; 
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[2] = 0; 
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[3] = 255; 
+            }
+            else{
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[0] = 200;
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[1] = 0; 
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[2] = 0; 
+                mat.ucharPtr(currentPixel[0], currentPixel[1])[3] = 255; 
+            }
         }
     }
-    if(mat.ucharPtr(px1[0], px1[1]).every((val, index) => val == color[index]) )
+    //cv.imshow(canvas, mat);
+}
+function preview(){
+    showingPreview = !showingPreview;
+    if(showingPreview) cv.imshow(canvas, matOut);
+    else cv.imshow(canvas, matOrig);
+}
+function vertPixelComp(px1, color, radius){
+    let hasAbove=[];
+    let hasBelow=[];
+    if(compareCoordsToColor(px1[0], px1[1],color)){  //check the center pixel
         return true;
-    return false;
+    }
+    for(let y = 1; y <= (radius+1); y++){
+        if(px1[0] >= y){  //block negative coords
+            if(compareCoordsToColor(px1[0] - y, px1[1],color)){     //check below pixels
+                hasBelow.push(y);
+            }
+        }
+        if((px1[0] + y) < height){//block off screen coords
+            if(compareCoordsToColor(px1[0] + y, px1[1],color)){    //check above pixels
+                hasAbove.push(y);
+            }
+        }
+    }
+    if( ((hasAbove.length + hasBelow.length) == 0) ||
+        (hasAbove[0] == radius+1) && (hasBelow.length==0) ||
+        (hasBelow[0] == radius+1) && (hasAbove.length==0) ||
+        (hasAbove[0] == radius+1) && (hasBelow[0] == radius+1)){  
+        return false;   //none of the pixels in range matches
+    }
+    if((hasAbove[0] == 1) && (hasBelow[0] == 1)){
+        return false;   //is a critical pixel
+    }
+    if(((hasAbove[0] + hasBelow[0]) == 3) && ((hasAbove[0] * hasBelow[0]) != 0)){
+        return false;   //is a critical pixel        
+    }
+
+    return true;
 }
 function download() {
     

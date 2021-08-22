@@ -4,3 +4,4 @@
     - misto
 - Visualização:
     - Redimensionar para visualização de tamanho definido.
+    - Visualizar saída

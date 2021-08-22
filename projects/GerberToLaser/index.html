@@ -39,7 +39,10 @@
                     <input type='file' accept='.gbr' onchange='openFile(event)' id= "file"><br>
                     <button onclick='convert()'>Convert</button>
                     
-                    <button onclick="download()">
+                    <button disabled id="preview_bt" onclick="preview()">
+                        Preview
+                    </button>
+                    <button disabled id="download_bt" onclick="download()">
                         Download file
                     </button>
                     <table>
@@ -53,11 +56,11 @@
                         </tr>
                         <tr>
                             <td>Bean horizontal size (mm)</td> 
-                            <td><input type='text' id="beanHsize" value="0.2"><td>
+                            <td><input type='number' id="beanHsize" value="0.2" step="0.1"><td>
                         </tr>
                         <tr>
                             <td>Bean vertical size (mm)</td> 
-                            <td><input type='text' id="beanVsize" value="0.2"><td>
+                            <td><input type='number' id="beanVsize" value="0.2" step="0.1"><td>
                         </tr>
                         <tr>
                             <td>Lines/mm</td> 
@@ -67,7 +70,7 @@
                         </tr>
                         <tr>
                             <td>Laser on speed (mm/min)</td> 
-                            <td><input type='number' id="burn_speed" value="500" min="0"><td>
+                            <td><input type='number' id="burn_speed" value="500" min="0" step="100"><td>
                         </tr>
                         <!-- <tr>
                             <td>Laser off speed (mm/min)</td> 
@@ -75,7 +78,7 @@
                         </tr> -->
                         <tr>
                             <td>Travel speed (mm/min)</td> 
-                            <td><input type='number' id="travel_speed" value="5000" min="0"><td>
+                            <td><input type='number' id="travel_speed" value="5000" min="0" step="100"><td>
                         </tr>
                         <tr>
                             <td>Distance to change speed (mm)</td> 
@@ -86,7 +89,7 @@
                         </tr>
                         <tr>
                             <td>Border clearance (mm)</td> 
-                            <td><input disabled type='number' id="border_clearance" value="1" min="0"><td>
+                            <td><input type='number' id="border_clearance" value="0.3" min="0" step="0.5"><td>
                         </tr>
                         <!-- <tr>
                             <td>asdasdasdasd </td> 
