@@ -1,16 +1,7 @@
 <html>
     <title>Lights Control</title>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>
-            function sendCommand(cmd) {
-                try {
-                    fetch("/"+cmd);
-                }catch (e) {
-                    logMyErrors(e);
-                }
-            }
-        </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         * {
             box-sizing: border-box;
@@ -51,18 +42,18 @@
         }
     </style>
     </head>
-    <body class="body">
+    <body class="body" style="background:black">
         <div class="container">
-                <div class="col-2 button" onclick="sendCommand('out1')"> <div class="center">out1</div> </div>
-                <div class="col-2 button" onclick="sendCommand('out2')"> <div class="center">out2</div> </div>
-                <div class="col-2 button" onclick="sendCommand('out3')"> <div class="center">out3</div> </div>
-                <div class="col-2 button" onclick="sendCommand('out4')"> <div class="center">out4</div> </div>
+                <div class="col-2 button" onclick="fetch('/out1')"> <div class="center">out1</div> </div>
+                <div class="col-2 button" onclick="fetch('/out2')"> <div class="center">out2</div> </div>
+                <div class="col-2 button" onclick="fetch('/out3')"> <div class="center">out3</div> </div>
+                <div class="col-2 button" onclick="fetch('/out4')"> <div class="center">out4</div> </div>
         </div>
         <div class="container">
-                <div class="col-2 button" style="background-color: #a00000;" onclick="sendCommand('red'  )"> <div class="center">red    </div> </div>
-                <div class="col-2 button" style="background-color: #00a000;" onclick="sendCommand('green')"> <div class="center">green  </div> </div>
-                <div class="col-2 button" style="background-color: #0000a0;" onclick="sendCommand('blue' )"> <div class="center">blue   </div> </div>
-                <div class="col-2 button" style="background-color: #b1b1b1;" onclick="sendCommand('clear')"> <div class="center">clear  </div> </div>
+                <div class="col-2 button" style="background-color: #a00000;" onclick="fetch('/red'  )"> <div class="center">red    </div> </div>
+                <div class="col-2 button" style="background-color: #00a000;" onclick="fetch('/green')"> <div class="center">green  </div> </div>
+                <div class="col-2 button" style="background-color: #0000a0;" onclick="fetch('/blue' )"> <div class="center">blue   </div> </div>
+                <div class="col-2 button" style="background-color: #b1b1b1;" onclick="fetch('/clear')"> <div class="center">clear  </div> </div>
         </div>
     </body>
     </html>
