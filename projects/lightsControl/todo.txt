@@ -1,4 +1,3 @@
 Buttons:
-    Out 1,2,3,4 (+ pwm)
-    color picker
+    color picker?
     

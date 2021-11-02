@@ -1,3 +1,19 @@
+let pwmValue = 255;
+function sendCommand(cmd) {
+    try {//http://192.168.15.23
+        fetch("/"+cmd+"?PWM="+pwmValue);
+    }catch (e) {
+        logMyErrors(e);
+     }
+}
+function changedPWM(){
+    pwmValue = document.getElementById("pwmSlider").value;
+}
+
+
+
+
+
 // let ip = "";
 // $(document).ready(function() { 
 //     ip = getCookie("ipAddress");
@@ -10,8 +26,6 @@
 //     setCookie("ipAddress", ip, 180);
 //     console.log(ip);
 // }
-
-
 
 // function setCookie(cname, cvalue, exdays) {
 //     const d = new Date();
@@ -36,12 +50,3 @@
 //     }
 //     return "";
 //   }
-
-  
-function sendCommand(cmd) {
-    try {
-        fetch("/"+cmd);
-    }catch (e) {
-        logMyErrors(e);
-     }
-}
