@@ -13,11 +13,12 @@
             display: none;
         }
         .slidecontainer {
-            width: 100%;
+            display: flex;
+            padding-top: 20px;
         }
         .slider {
             -webkit-appearance: none;
-            width: 100%;
+            width: 96%;
             height: 20px;
             background: #d3d3d3;
             outline: none;
@@ -84,18 +85,18 @@
     <body class="body">
         <div class="outer">
             <div class="container">
-                    <div class="col-2 button" onclick="sendCommand('out1')">out1</div>
-                    <div class="col-2 button" onclick="sendCommand('out2')">out2</div>
-                    <div class="col-2 button" onclick="sendCommand('out3')">out3</div>
-                    <div class="col-2 button" onclick="sendCommand('out4')">out4</div>
+                <div class="col-2 button" onclick="sendCommand('out1')">out1</div>
+                <div class="col-2 button" onclick="sendCommand('out2')">out2</div>
+                <div class="col-2 button" onclick="sendCommand('out3')">out3</div>
+                <div class="col-2 button" onclick="sendCommand('out4')">out4</div>
             </div>
             <div class="container">
-                    <div class="col-2 button" style="background-color: #a00000;" onclick="sendCommand('red'  )">red</div>
-                    <div class="col-2 button" style="background-color: #00a000;" onclick="sendCommand('green')">green</div>
-                    <div class="col-2 button" style="background-color: #0000a0;" onclick="sendCommand('blue' )">blue</div>
-                    <div class="col-2 button" style="background-color: #b1b1b1;" onclick="sendCommand('clear')">clear</div>
+                <div class="col-2 button" style="background-color: #a00000;" onclick="sendCommand('red'  )">red</div>
+                <div class="col-2 button" style="background-color: #00a000;" onclick="sendCommand('green')">green</div>
+                <div class="col-2 button" style="background-color: #0000a0;" onclick="sendCommand('blue' )">blue</div>
+                <div class="col-2 button" style="background-color: #b1b1b1;" onclick="sendCommand('clear')">clear</div>
             </div>
-            <div class="container">
+            <div class="container slidecontainer">
                 <input type="range" min="0" max="255" value="255" class="slider" id="pwmSlider" onchange="changedPWM()">
             </div>
         </div>
